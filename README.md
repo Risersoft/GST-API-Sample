@@ -13,3 +13,5 @@ Usage:
     GSTN is constantly evolving the APIs.
     Use the GSTN.API.Library.dll directly in your projects
     This will enable easy updation in case of change
+
+For custom and specific requirements, pl contact support (at) risersoft (dot) com
