@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using GSTN.API;
+using System.Diagnostics;
 
 namespace Risersoft.API.GSTN.Console
 {
@@ -21,7 +21,6 @@ namespace Risersoft.API.GSTN.Console
         static void Main(string[] args)
         {
             string gstin = "", userid="", fp = "", filename = "", ctin = "",etin="";
-       
             if ((args != null) && (System.IO.File.Exists(args[0])))
             {
                 filename = args[0];
@@ -247,7 +246,7 @@ namespace Risersoft.API.GSTN.Console
 
             GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
-            model.b2b = client2.GetB2B("","").Data;
+            model = client2.GetSection("B2B","","","").Data;
 
         }
         private static void TestGSTR2Get(string gstin, string userid, string fp)
@@ -257,7 +256,7 @@ namespace Risersoft.API.GSTN.Console
             GSTR2ApiClient client2 = new GSTR2ApiClient(client, gstin, fp);
             System.Console.Write("Action Required? Y/N/Enter");
             string action = System.Console.ReadLine();
-            model.b2b = client2.GetB2B(action,"").Data;
+            model = client2.GetSection("B2B","",action,"").Data;
             var model2 = client2.GetSummary().Data;
         }
         private static void TestGSTR3(string gstin, string userid, string fp)
@@ -279,7 +278,7 @@ namespace Risersoft.API.GSTN.Console
             GSTNAuthClient client = GetAuth(gstin, userid);
             GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
-            model.b2b = client2.GetB2B("Y","").Data;
+            model = client2.GetSection("B2B","","Y","").Data;
 
             var client3 = new MxApiClient("http://www.maximprise.com/api/gst");
             string str1 = client3.Json2CSV(client2.dicParams["ResponsePayload"], "gstr1", "b2b").Data;
@@ -287,7 +286,7 @@ namespace Risersoft.API.GSTN.Console
         }
         private static void TestGSTR1Save(string gstin, string userid, string fp, string ctin, string etin )
         {
-            GSTNAuthClient client = GetAuth(gstin, userid);
+            GSTNAuthClient auth = GetAuth(gstin, userid);
             var filename = "sampledata\\b2bout.json";
             if (String.IsNullOrEmpty(ctin)) {
                 System.Console.Write("Enter CTIN:");
@@ -303,7 +302,7 @@ namespace Risersoft.API.GSTN.Console
             GSTR1.GSTR1Total model = JsonConvert.DeserializeObject<GSTR1.GSTR1Total>(str1);
             model.gstin = gstin;
             model.fp = fp;
-            GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
+            GSTR1ApiClient client2 = new GSTR1ApiClient(auth, gstin, fp);
             var info = client2.Save(model);
             GetStatus(client2, info.Data, fp);
 
@@ -311,7 +310,7 @@ namespace Risersoft.API.GSTN.Console
         }
         private static void TestGSTR2Save(string gstin, string userid, string fp, string ctin)
         {
-            GSTNAuthClient client = GetAuth(gstin, userid);
+            GSTNAuthClient auth = GetAuth(gstin, userid);
             var filename = "sampledata\\b2bin.json";
             if (String.IsNullOrEmpty(ctin))
             {
@@ -323,7 +322,7 @@ namespace Risersoft.API.GSTN.Console
             GSTR2.GSTR2Total model = JsonConvert.DeserializeObject<GSTR2.GSTR2Total>(str1);
             model.gstin = gstin;
             model.fp = fp;
-            GSTR2ApiClient client2 = new GSTR2ApiClient(client, gstin, fp);
+            GSTR2ApiClient client2 = new GSTR2ApiClient(auth, gstin, fp);
             var info = client2.Save(model);
             GetStatus(client2, info.Data, fp);
 
@@ -332,7 +331,7 @@ namespace Risersoft.API.GSTN.Console
         private static void GetStatus(GSTNReturnsClient client2, SaveInfo info, string fp)
         {
             System.Console.WriteLine("Reference_ID: "+info.reference_id);
-            var status = client2.GetStatus(fp, info.reference_id);
+            var status = client2.GetStatus(info.reference_id);
             System.Console.WriteLine(JsonConvert.SerializeObject(status.Data));
 
         }
