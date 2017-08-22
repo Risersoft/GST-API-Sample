@@ -14,4 +14,10 @@ Usage:
     Use the GSTN.API.Library.dll directly in your projects
     This will enable easy updation in case of change
 
+Attractions:
+    
+    Production ready fully tested API
+    FILEDET and RETSTATUS implemented
+    Single Function for multiple sections
+
 For custom and specific requirements, pl contact support (at) risersoft (dot) com
