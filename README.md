@@ -19,5 +19,9 @@ Attractions:
     Production ready fully tested API
     FILEDET and RETSTATUS implemented
     Single Function for multiple sections
+    
+Nuget Package:
+
+    https://www.nuget.org/packages/Risersoft.GSTN.API.Library/
 
 For custom and specific requirements, pl contact support (at) risersoft (dot) com
