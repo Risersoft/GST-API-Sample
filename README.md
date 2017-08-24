@@ -11,7 +11,7 @@ Releasing the compiled library also means that you don't need to worry about mai
 Usage:
 
     GSTN is constantly evolving the APIs.
-    Use Nuget Package: https://www.nuget.org/packages/Risersoft.GSTN.API.Library/
+    Use Nuget Package directly in your project
     This will enable easy updation in case of change
 
 Attractions:
@@ -19,5 +19,7 @@ Attractions:
     Production ready fully tested API
     FILEDET and RETSTATUS implemented
     Single Function for multiple sections
-    
+
+Nuget Package: https://www.nuget.org/packages/Risersoft.GSTN.API.Library/
+
 For custom and specific requirements, pl contact support (at) risersoft (dot) com
